@@ -1,3 +1,5 @@
+#Warn All
+#Warn UseUnsetGlobal, off
 #NoEnv	; Recommended for performance and compatibility with future AutoHotkey releases.
 
 ScriptLog := new ScriptLog()
