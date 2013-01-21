@@ -9,15 +9,14 @@ SimulateHumanLag() {
 }
 
 class SearchResultPage {	
-	static items := [320, 365, 410, 455, 500, 545, 590, 635, 680, 725, 770]
+	static bidcoins := [317, 362, 407, 452, 497, 542, 587, 632, 677, 722, 767]
 	
 	CurrentResultCount() {
 		found := 0
 		
-		loop % this.items.maxindex() {
-			pixelgetcolor, colour, 1330, a_index
-			ScriptLog.Message(colour)
-			if (colour != 0x020404) {
+		loop % this.bidcoins.maxindex() {
+			ImageSearch, x, y, 1324, this.bidcoins[a_index], 1335, this.bidcoins[a_index] + 11, *50 %a_scriptdir%\images\goldcoin.png
+			if (errorlevel != 0) {
 				break
 			}
 			
@@ -31,7 +30,7 @@ class SearchResultPage {
 	SelectItem(index) {
 		ScriptLog.Message("Selecting item: " . index)
 		SimulateHumanLag()
-		mousemove, 800, this.items[index], 100
+		mousemove, 800, this.bidcoins[index], 100
 		sendplay, {click}
 	}
 	
@@ -109,7 +108,7 @@ class EquipmentSearchPage {
 	}
 	
 	Search() {
-		ScriptLog.Message("Searchine for items...")
+		ScriptLog.Message("Searching for items...")
 		SimulateHumanLag()
 		mousemove, 520, 840, 100
 		sendplay, {click}
