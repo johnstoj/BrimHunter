@@ -1,6 +1,8 @@
 ﻿#NoEnv
 SendMode Input
 
+#include scriptlog.ahk
+
 SimulateHumanLag() {
 	random, delay, 1100, 3300
 	sleep, delay
@@ -10,16 +12,24 @@ class SearchResultPage {
 	static items := [320, 365, 410, 455, 500, 545, 590, 635, 680, 725, 770]
 	
 	CurrentResultCount() {
+		found := 0
+		
 		loop % this.items.maxindex() {
 			pixelgetcolor, colour, 1330, a_index
-			if (colour != 0x27b0e9)
-				return a_index - 1
+			ScriptLog.Message(colour)
+			if (colour != 0x020404) {
+				break
+			}
+			
+			found += 1
 		}
 		
-		return this.items.maxindex()
+		ScriptLog.Message("Found " . found . " items.")
+		return found
 	}
 	
 	SelectItem(index) {
+		ScriptLog.Message("Selecting item: " . index)
 		SimulateHumanLag()
 		mousemove, 800, this.items[index], 100
 		sendplay, {click}
@@ -28,6 +38,7 @@ class SearchResultPage {
 	BuyOutItem(index) {
 		this.SelectItem(index)
 		
+		ScriptLog.Message("Buying item: " . index)
 		SimulateHumanLag()
 		mousemove, 1450, 880, 100
 		sendplay, {click}
@@ -35,6 +46,10 @@ class SearchResultPage {
 		SimulateHumanLag()
 		mousemove, 850, 780, 100
 		sendplay, {click}
+		
+		sleep, 5000
+		mousemove, 960, 460, 100
+		sendplay, {click}		
 	}
 }
 
@@ -46,6 +61,7 @@ class EquipmentSearchPage {
 	}
 	
 	SetItemType(type) {
+		ScriptLog.Message("Setting item type: " . type)
 		SimulateHumanLag()
 		mousemove, 630, 345, 100
 		sendplay, {click}
@@ -57,6 +73,7 @@ class EquipmentSearchPage {
 	}
 	
 	SetMinItemLevel(level) {
+		ScriptLog.Message("Setting item level: " . level)
 		SimulateHumanLag()
 		mousemove, 410, 450, 100
 		sendplay, {click}
@@ -67,18 +84,8 @@ class EquipmentSearchPage {
 		sendplay, %level%
 	}
 	
-	SetMaxBuyOut(gold) {
-		SimulateHumanLag()
-		mousemove, 520, 530, 100
-		sendplay, {click}
-
-		SimulateHumanLag()	
-		sendplay, ^{a}
-		SimulateHumanLag()
-		sendplay, %gold%
-	}
-	
 	SetItemQuality(quality) {
+		ScriptLog.Message("Setting item quality: " . quality)
 		SimulateHumanLag()
 		mousemove, 630, 450, 100
 		sendplay, {click}
@@ -89,7 +96,20 @@ class EquipmentSearchPage {
 		sendplay, {click}
 	}
 	
+	SetMaxBuyOut(gold) {
+		ScriptLog.Message("Setting buyout: " . gold)
+		SimulateHumanLag()
+		mousemove, 520, 530, 100
+		sendplay, {click}
+
+		SimulateHumanLag()	
+		sendplay, ^{a}
+		SimulateHumanLag()
+		sendplay, %gold%
+	}
+	
 	Search() {
+		ScriptLog.Message("Searchine for items...")
 		SimulateHumanLag()
 		mousemove, 520, 840, 100
 		sendplay, {click}
