@@ -8,9 +8,9 @@ SetWorkingDir %A_ScriptDir%
 #include scriptlog.ahk
 #include auctions.ahk
 
-ScriptLog.Message("Starting...")
+ScriptLog.Message("BrimHunter v1.0 by Jotsnhoj")
 BrimHunter:
-	ScriptLog.Message("Looking for items...")
+	ScriptLog.Message("Waking. *Yawn* *Stretch*")
 	IfWinExist, Diablo III
 	{
 		blockinput, sendandmouse
@@ -21,18 +21,21 @@ BrimHunter:
 		auctions := home.NavigateToAuctionHouse()
 		search := auctions.NavigateToSearchPage()
 
-		equipment := search.NavigateToEquipmentSearchPage()
-		equipment.SetItemType("Armor")
-		equipment.SetMinItemLevel(60)
-		equipment.SetItemQuality("Legendary")
-		equipment.SetMaxBuyOut(25000)
+		equipmentSearchPage := search.NavigateToEquipmentSearchPage()		
+		equipmentSearchPage.SetMinItemLevel(60)
+		equipmentSearchPage.SetItemQuality("Legendary")
+		equipmentSearchPage.SetMaxBuyOut(25000)
+		equipment := ["1-Hand", "2-Hand", "Off-Hand", "Armor", "Follower Special"]
+		for index, type in equipment {
+			equipmentSearchPage.SetItemType(type)
 
-		results := equipment.Search()
-		loop % results.CurrentResultCount()  {
-			results.BuyOutItem(a_index)
-			;results.SelectItem(a_index)
+			results := equipmentSearchPage.Search()
+			loop % results.CurrentResultCount()  {
+				results.BuyOutItem(a_index)
+				;results.SelectItem(a_index)
+			}		
 		}
-
+		
 		auctions.Close()
 		
 		random, nextrun, 180000, 300000
@@ -43,6 +46,6 @@ return
 
 esc::
 	blockinput, default
-	ScriptLog.Message("Stopping on request.")
+	ScriptLog.Message("Stopping on user request.")
 	exitapp
 return

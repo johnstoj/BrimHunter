@@ -29,7 +29,7 @@ class SearchResultPage {
 	
 	SelectItem(index) {
 		ScriptLog.Message("Selecting item: " . index)
-		SimulateHumanLag()
+		;SimulateHumanLag()
 		mousemove, 800, this.bidcoins[index], 100
 		sendplay, {click}
 	}
@@ -38,7 +38,7 @@ class SearchResultPage {
 		this.SelectItem(index)
 		
 		ScriptLog.Message("Buying item: " . index)
-		SimulateHumanLag()
+		;SimulateHumanLag()
 		mousemove, 1450, 880, 100
 		sendplay, {click}
 		
@@ -46,7 +46,7 @@ class SearchResultPage {
 		mousemove, 850, 780, 100
 		sendplay, {click}
 		
-		sleep, 5000
+		sleep, 10000
 		mousemove, 960, 460, 100
 		sendplay, {click}		
 	}
