@@ -1,7 +1,7 @@
 ﻿#NoEnv
 SendMode Input
 
-#include scriptlog.ahk
+#include ScriptLog.ahk
 
 SimulateHumanLag(lower = 1100, upper = 3300) {
 	random, delay, lower, upper
@@ -9,9 +9,11 @@ SimulateHumanLag(lower = 1100, upper = 3300) {
 }
 
 SimulateHumanClick(x, y, rx = 3, ry = 3) {
-	blockinput, mouse
+	blockinput, mouse	
 	SimulateHumanLag()
-	mousemove, x, y, 100
+	random, rx, rx * -1, rx
+	random, ry, ry * -1, ry
+	mousemove, x + rx, y + ry, 100
 	
 	SimulateHumanLag(25, 55)
 	sendplay, {click}
@@ -21,7 +23,9 @@ SimulateHumanClick(x, y, rx = 3, ry = 3) {
 SimulateHumanDataEntry(keys, x, y, rx = 3, ry = 3) {
 	blockinput, on
 	SimulateHumanLag()
-	mousemove, x, y, 100
+	random, rx, rx * -1, rx
+	random, ry, ry * -1, ry
+	mousemove, x + rx, y + ry, 100
 	
 	SimulateHumanLag(25, 55)
 	sendplay, {click}

@@ -1,16 +1,38 @@
 ﻿#NoEnv
 #Warn
 #Persistent 
+#SingleInstance force
 
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-#include scriptlog.ahk
-#include auctions.ahk
+#include ScriptLog.ahk
+#include Auctions.ahk
 
-ScriptLog.Message("BrimHunter v1.0 by Jotsnhoj")
+MilliToHMS(milli, ByRef hours=0, ByRef mins=0, ByRef secs=0) {
+  setformat, float, 02.0
+  milli /= 1000.0
+  secs := mod(milli, 60)
+  setformat, float, 02.0
+  secs += 0.0
+  
+  setformat, float, 02.0
+  milli //= 60
+  mins := mod(milli, 60)
+  
+  setformat, float, 02.0
+  mins += 0.0
+  
+  hours := milli //60
+  setformat, float, 02.0
+  hours += 0.0
+  
+  return hours . ":" . mins . ":" . secs
+}
+
+
 BrimHunter:
-	ScriptLog.Message("Waking. *Yawn* *Stretch*")
+	ScriptLog.Message("BrimHunter Waking... *Yawn* *Stretch*")
 	IfWinExist, Diablo III
 	{
 		winactivate, Diablo III
@@ -38,7 +60,7 @@ BrimHunter:
 		auctions.Close()
 		
 		random, nextrun, 180000, 300000
-		ScriptLog.Message("Next run scheduled in " . nextrun . "ms." . "`n")
+		ScriptLog.Message("Next run scheduled in ~" . MilliToHMS(nextrun) . "." . "`n")
 		settimer, BrimHunter, %nextrun%
 	}
 return

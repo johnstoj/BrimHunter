@@ -44,8 +44,11 @@ class ScriptLog {
 
 	Message(msg) {
 		callstack := exception("", -1, 0)
+		scriptfilepath := callstack.file
+		splitpath, scriptfilepath, scriptfile
 		formattime, timestamp, , dd-MM-yyyy HH:mm:ss
-		message := "`n" . timestamp . " " . callstack.file . ":" . callstack.line . " " . msg
+		message := "`n" . timestamp . " " . scriptfile . ":" . callstack.line . " " . msg
+		
 		tooltip, %message%, 0, 0
 		FileAppend %message%, % this.logfile
 	}
