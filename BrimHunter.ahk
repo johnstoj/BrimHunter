@@ -46,9 +46,12 @@ BrimHunter:
 		equipmentSearchPage.SetMinItemLevel(60)
 		equipmentSearchPage.SetItemQuality("Legendary")
 		equipmentSearchPage.SetMaxBuyOut(22000)
+		
 		equipment := ["1-Hand", "2-Hand", "Off-Hand", "Armor"]
-		for index, type in equipment {
-			equipmentSearchPage.SetItemType(type)
+		while (equipment.maxindex()) {
+			random, index, 1, equipment.maxindex()
+			equipmentSearchPage.SetItemType(equipment[index])
+			equipment.remove(index)
 
 			results := equipmentSearchPage.Search()
 			loop % results.CurrentResultCount()  {
@@ -59,7 +62,7 @@ BrimHunter:
 		
 		auctions.Close()
 		
-		random, nextrun, 180000, 300000
+		random, nextrun, 10000, 300000
 		ScriptLog.Message("Sleeping for ~" . MilliToHMS(nextrun) . "." . "`n")
 		settimer, BrimHunter, %nextrun%
 	}
