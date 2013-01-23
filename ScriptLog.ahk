@@ -48,7 +48,7 @@ class ScriptLog {
 		splitpath, scriptfilepath, scriptfile
 		formattime, timestamp, , dd-MM-yyyy HH:mm:ss
 		message := "`n" . timestamp . " " . scriptfile . ":" . callstack.line . " " . msg
-		
+				
 		tooltip, %message%, 0, 0
 		FileAppend %message%, % this.logfile
 	}

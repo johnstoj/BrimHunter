@@ -32,10 +32,10 @@ MilliToHMS(milli, ByRef hours=0, ByRef mins=0, ByRef secs=0) {
 
 
 BrimHunter:
-	ScriptLog.Message("BrimHunter Waking... *Yawn* *Stretch*")
 	IfWinExist, Diablo III
 	{
 		winactivate, Diablo III
+		ScriptLog.Message("BrimHunter Waking... *Yawn* *Stretch*")
 		sleep, 2000
 
 		home := new HeroPage()
