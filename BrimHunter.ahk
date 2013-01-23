@@ -13,7 +13,6 @@ BrimHunter:
 	ScriptLog.Message("Waking. *Yawn* *Stretch*")
 	IfWinExist, Diablo III
 	{
-		blockinput, sendandmouse
 		winactivate, Diablo III
 		sleep, 2000
 
@@ -24,7 +23,7 @@ BrimHunter:
 		equipmentSearchPage := search.NavigateToEquipmentSearchPage()		
 		equipmentSearchPage.SetMinItemLevel(60)
 		equipmentSearchPage.SetItemQuality("Legendary")
-		equipmentSearchPage.SetMaxBuyOut(25000)
+		equipmentSearchPage.SetMaxBuyOut(22000)
 		equipment := ["1-Hand", "2-Hand", "Off-Hand", "Armor", "Follower Special"]
 		for index, type in equipment {
 			equipmentSearchPage.SetItemType(type)
@@ -44,8 +43,8 @@ BrimHunter:
 	}
 return
 
-esc::
-	blockinput, default
+end::
+	blockinput, off
 	ScriptLog.Message("Stopping on user request.")
 	exitapp
 return

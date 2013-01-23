@@ -3,9 +3,32 @@ SendMode Input
 
 #include scriptlog.ahk
 
-SimulateHumanLag() {
-	random, delay, 1100, 3300
+SimulateHumanLag(lower = 1100, upper = 3300) {
+	random, delay, lower, upper
 	sleep, delay
+}
+
+SimulateHumanClick(x, y, rx = 3, ry = 3) {
+	blockinput, mouse
+	SimulateHumanLag()
+	mousemove, x, y, 100
+	
+	SimulateHumanLag(25, 55)
+	sendplay, {click}
+	blockinput, off
+}
+
+SimulateHumanDataEntry(keys, x, y, rx = 3, ry = 3) {
+	blockinput, on
+	SimulateHumanLag()
+	mousemove, x, y, 100
+	
+	SimulateHumanLag(25, 55)
+	sendplay, {click}
+	
+	SimulateHumanLag()
+	sendplay, %keys%
+	blockinput, off
 }
 
 class SearchResultPage {	
@@ -29,7 +52,6 @@ class SearchResultPage {
 	
 	SelectItem(index) {
 		ScriptLog.Message("Selecting item: " . index)
-		;SimulateHumanLag()
 		mousemove, 800, this.bidcoins[index], 100
 		sendplay, {click}
 	}
@@ -38,80 +60,50 @@ class SearchResultPage {
 		this.SelectItem(index)
 		
 		ScriptLog.Message("Buying item: " . index)
-		;SimulateHumanLag()
 		mousemove, 1450, 880, 100
 		sendplay, {click}
 		
-		SimulateHumanLag()
-		mousemove, 850, 780, 100
-		sendplay, {click}
+		SimulateHumanClick(850, 780)
 		
-		sleep, 10000
-		mousemove, 960, 460, 100
-		sendplay, {click}		
+		sleep, 7000
+		SimulateHumanClick(960, 460)
 	}
 }
 
 class EquipmentSearchPage {
 	Close() {
-		SimulateHumanLag()
-		mousemove, 390, 230, 100
-		sendplay, {click}
+		SimulateHumanClick(390, 230)
 	}
 	
 	SetItemType(type) {
 		ScriptLog.Message("Setting item type: " . type)
-		SimulateHumanLag()
-		mousemove, 630, 345, 100
-		sendplay, {click}
+		SimulateHumanClick(630, 345)
 		
-		SimulateHumanLag()
-		y := object("1-Hand", 390, "2-Hand", 420, "Off-Hand", 450, "Armor", 480, "Follower Special", 510)
-		mousemove, 420, y[type], 100
-		sendplay, {click}
+		y := object("1-Hand", 390, "2-Hand", 420, "Off-Hand", 450, "Armor", 480, "Follower Special", 510)		
+		SimulateHumanClick(420, y[type])
 	}
 	
 	SetMinItemLevel(level) {
 		ScriptLog.Message("Setting item level: " . level)
-		SimulateHumanLag()
-		mousemove, 410, 450, 100
-		sendplay, {click}
-		
-		SimulateHumanLag()
-		sendplay, ^{a}
-		SimulateHumanLag()
-		sendplay, %level%
+		SimulateHumanDataEntry("^{a}" . level, 410, 450)
 	}
 	
 	SetItemQuality(quality) {
 		ScriptLog.Message("Setting item quality: " . quality)
-		SimulateHumanLag()
-		mousemove, 630, 450, 100
-		sendplay, {click}
+		SimulateHumanClick(630, 450)
 		
-		SimulateHumanLag()
 		y := object("All", 495, "Inferior", 525, "Normal", 555, "Superior", 585, "Magic", 615, "Rare", 645, "Legendary", 675)		
-		mousemove, 550, y[quality], 100
-		sendplay, {click}
+		SimulateHumanClick(550, y[quality])
 	}
 	
 	SetMaxBuyOut(gold) {
 		ScriptLog.Message("Setting buyout: " . gold)
-		SimulateHumanLag()
-		mousemove, 520, 530, 100
-		sendplay, {click}
-
-		SimulateHumanLag()	
-		sendplay, ^{a}
-		SimulateHumanLag()
-		sendplay, %gold%
+		SimulateHumanDataEntry("^{a}" . gold, 520, 530)
 	}
 	
 	Search() {
 		ScriptLog.Message("Searching for items...")
-		SimulateHumanLag()
-		mousemove, 520, 840, 100
-		sendplay, {click}
+		SimulateHumanClick(520, 840)
 		
 		sleep 5000
 		return new SearchResultPage()
@@ -120,45 +112,32 @@ class EquipmentSearchPage {
 
 class AuctionHouseSearchPage {
 	NavigateToEquipmentSearchPage() {
-				SimulateHumanLag()
-
-		mousemove, 515, 240, 100
-		sendplay, {click}
+		SimulateHumanClick(515, 240)
 
 		return new EquipmentSearchPage()
 	}
 	
 	NavigateToGemsSearchPage() {
-		SimulateHumanLag()		
-		mousemove, 515, 290, 100
-		sendplay, {click}
+		SimulateHumanClick(515, 290)
 	}
 	
 	NavigateToCraftingAndDyesSearchPage() {
-		SimulateHumanLag()		
-		mousemove, 515, 350, 100
-		sendplay, {click}
+		SimulateHumanClick(515, 350)
 	}
 	
 	NavigateToPagesAndRecipesSearchPage() {
-		SimulateHumanLag()		
-		mousemove, 515, 405, 100
-		sendplay, {click}
+		SimulateHumanClick(515, 405)
 	}
 }
 
 
 class AuctionHousePage {
 	Close() {
-		SimulateHumanLag()		
-		mousemove, 1580, 110, 100
-		sendplay, {click}
+		SimulateHumanClick(1580, 110)
 	}
 	
 	NavigateToSearchPage() {
-		SimulateHumanLag()
-		mousemove, 630, 160, 100
-		sendplay, {click}
+		SimulateHumanClick(630, 160)
 
 		return new AuctionHouseSearchPage()
 	}
@@ -166,9 +145,7 @@ class AuctionHousePage {
 
 class HeroPage {	
 	NavigateToAuctionHouse() {
-		SimulateHumanLag()
-		mousemove, 230, 640, 100
-		sendplay, {click}
+		SimulateHumanClick(230, 640)
 		
 		return new AuctionHousePage()
 	}
