@@ -42,7 +42,7 @@ class SearchResultPage {
 		found := 0
 		
 		loop % this.bidcoins.maxindex() {
-			ImageSearch, x, y, 1324, this.bidcoins[a_index], 1335, this.bidcoins[a_index] + 11, *50 %a_scriptdir%\images\goldcoin.png
+			imagesearch, x, y, 1324, this.bidcoins[a_index], 1335, this.bidcoins[a_index] + 11, *50 %a_scriptdir%\images\goldcoin.png
 			if (errorlevel != 0) {
 				break
 			}
@@ -64,13 +64,30 @@ class SearchResultPage {
 		this.SelectItem(index)
 		
 		ScriptLog.Message("Buying item: " . index)
+		; Click "Buyout".
 		mousemove, 1450, 880, 100
 		sendplay, {click}
 		
+		; Confirm it.
 		SimulateHumanClick(850, 780)
 		
+		; Wait for result...
 		sleep, 7000
+		
+		; Figure out whether we won the item.
+		success := 0
+		imagesearch, x, y, 740, 310, 1180, 410, *30 %a_scriptdir%\images\buyoutaccepted.png
+		if (errorlevel = 0) {
+			success := 1
+			ScriptLog.Message("Buyout accepted!")
+		} else {
+			ScriptLog.Message("Item no longer available!")
+		}
+		
+		; Close the dialogue.
 		SimulateHumanClick(960, 460)
+		
+		return success
 	}
 }
 

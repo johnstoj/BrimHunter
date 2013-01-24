@@ -8,34 +8,15 @@ SetWorkingDir %A_ScriptDir%
 
 #include ScriptLog.ahk
 #include Auctions.ahk
+#include Utils.ahk
 
-MilliToHMS(milli, ByRef hours=0, ByRef mins=0, ByRef secs=0) {
-  setformat, float, 02.0
-  milli /= 1000.0
-  secs := mod(milli, 60)
-  setformat, float, 02.0
-  secs += 0.0
-  
-  setformat, float, 02.0
-  milli //= 60
-  mins := mod(milli, 60)
-  
-  setformat, float, 02.0
-  mins += 0.0
-  
-  hours := milli //60
-  setformat, float, 02.0
-  hours += 0.0
-  
-  return hours . ":" . mins . ":" . secs
-}
-
+totalbought := 0
 
 BrimHunter:
 	IfWinExist, Diablo III
 	{
 		winactivate, Diablo III
-		ScriptLog.Message("BrimHunter Waking... *Yawn* *Stretch*")
+		ScriptLog.Message("BrimHunter Waking... *Yawn* *Stretch* *Scratch*")
 		sleep, 2000
 
 		home := new HeroPage()
@@ -47,6 +28,7 @@ BrimHunter:
 		equipmentSearchPage.SetItemQuality("Legendary")
 		equipmentSearchPage.SetMaxBuyOut(22000)
 		
+		itemsbought := 0
 		equipment := ["1-Hand", "2-Hand", "Off-Hand", "Armor"]
 		while (equipment.maxindex()) {
 			random, index, 1, equipment.maxindex()
@@ -55,14 +37,15 @@ BrimHunter:
 
 			results := equipmentSearchPage.Search()
 			loop % results.CurrentResultCount()  {
-				results.BuyOutItem(a_index)
-				;results.SelectItem(a_index)
+				itemsbought += results.BuyOutItem(a_index)
 			}		
 		}
 		
+		totalbought += itemsbought
+		ScriptLog.Message("Items bought: " . itemsbought . ", Total: " . totalbought)
 		auctions.Close()
 		
-		random, nextrun, 10000, 300000
+		random, nextrun, 2000, 300000
 		ScriptLog.Message("Sleeping for ~" . MilliToHMS(nextrun) . "." . "`n")
 		settimer, BrimHunter, %nextrun%
 	}
@@ -71,5 +54,6 @@ return
 end::
 	blockinput, off
 	ScriptLog.Message("Stopping on user request.")
+	ScriptLog.Message("Total number of items bought this session: " . totalbought)
 	exitapp
 return

@@ -1,12 +1,13 @@
 #Warn All
 #Warn UseUnsetGlobal, off
-#NoEnv	; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv
 
 ScriptLog := new ScriptLog()
 
 class ScriptLog {
 	static instance
 	static logfile
+	static history := []
 
 	__New() {
 		if !this.instance {
@@ -42,6 +43,22 @@ class ScriptLog {
 		return this.logfile
 	}
 
+	GetMessageHistory(message = "", historydepth = 5) {
+		if (message != "") {
+			if (this.history.maxindex() = historydepth)
+				this.history.remove(1)
+			
+			this.history.insert(message)
+		}
+			
+		buffer := ""
+		loop % this.history.maxindex() {
+			buffer .= this.history[a_index]
+		}
+		
+		return buffer
+	}
+
 	Message(msg) {
 		callstack := exception("", -1, 0)
 		scriptfilepath := callstack.file
@@ -49,10 +66,8 @@ class ScriptLog {
 		formattime, timestamp, , dd-MM-yyyy HH:mm:ss
 		message := "`n" . timestamp . " " . scriptfile . ":" . callstack.line . " " . msg
 				
-		tooltip, %message%, 0, 0
+		tooltip, % this.GetMessageHistory(message), 0, 0
 		FileAppend %message%, % this.logfile
 	}
-
-
 
 }
