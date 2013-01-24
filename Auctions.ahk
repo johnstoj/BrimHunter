@@ -13,10 +13,7 @@ SimulateHumanClick(x, y, rx = 3, ry = 3) {
 	SimulateHumanLag()
 	random, rx, rx * -1, rx
 	random, ry, ry * -1, ry
-	mousemove, x + rx, y + ry, 100
-	
-	SimulateHumanLag(25, 55)
-	sendplay, {click}
+	mouseclick, , x + rx, y + ry, , 3
 	blockinput, off
 }
 
@@ -25,11 +22,8 @@ SimulateHumanDataEntry(keys, x, y, rx = 3, ry = 3) {
 	SimulateHumanLag()
 	random, rx, rx * -1, rx
 	random, ry, ry * -1, ry
-	mousemove, x + rx, y + ry, 100
-	
-	SimulateHumanLag(25, 55)
-	sendplay, {click}
-	
+	mouseclick, , x + rx, y + ry, , 3
+		
 	SimulateHumanLag()
 	sendplay, %keys%
 	blockinput, off
@@ -65,11 +59,10 @@ class SearchResultPage {
 		
 		ScriptLog.Message("Buying item: " . index)
 		; Click "Buyout".
-		mousemove, 1450, 880, 100
-		sendplay, {click}
+		mouseclick, , 1450, 880, , 3
 		
 		; Confirm it.
-		SimulateHumanClick(850, 780)
+		mouseclick, , 850, 780, , 3
 		
 		; Wait for result...
 		sleep, 7000
