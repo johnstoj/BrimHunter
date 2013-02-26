@@ -26,7 +26,7 @@ BrimHunter:
 		equipmentSearchPage := search.NavigateToEquipmentSearchPage()		
 		equipmentSearchPage.SetMinItemLevel(60)
 		equipmentSearchPage.SetItemQuality("Legendary")
-		equipmentSearchPage.SetMaxBuyOut(22000)
+		equipmentSearchPage.SetMaxBuyOut(12000)
 		
 		itemsbought := 0
 		equipment := ["1-Hand", "2-Hand", "Off-Hand", "Armor"]
